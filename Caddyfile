@@ -3,32 +3,26 @@
 }
 
 physrisk.com {
-    # Named matchers — tiles and non-tiles API are mutually exclusive
-    @tiles path /api/tiles/*
-    @api {
-        path /api/*
-        not path /api/tiles/*
-    }
-
-    rate_limit @tiles {
-        zone tiles {
-            key    {remote_host}
-            events 600
-            window 1m
+    handle /api* {
+        rate_limit {
+            zone tiles {
+                key {remote_host}
+                events 60
+                window 1m
+            }
         }
-    }
-
-    rate_limit @api {
-        zone api {
-            key    {remote_host}
-            events 60
-            window 1m
-        }
-    }
-
-    handle /api/* {
         uri strip_prefix /api
         reverse_proxy api:8081
+    }
+
+    handle /api/v1/tiles* {
+        rate_limit {
+            zone tiles {
+                key {remote_host}
+                events 600
+                window 1m
+            }
+        }
     }
 
     # Swagger UI fetches /openapi.json from the root
