@@ -24,7 +24,7 @@ physrisk.com {
                 path /api/*
             }
             key    {remote_host}
-            events 60
+            events 600
             window 1m
         }
     }
