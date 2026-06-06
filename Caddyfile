@@ -3,8 +3,11 @@
 }
 
 physrisk.com {
-    # Route API requests to the API container
-    reverse_proxy /api/* api:8081
+    # Route API requests to the API container, stripping the /api prefix
+    handle /api/* {
+        uri strip_prefix /api
+        reverse_proxy api:8081
+    }
 
     # Route everything else to the UI container
     reverse_proxy * ui:8080
