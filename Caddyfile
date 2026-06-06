@@ -3,7 +3,12 @@
 }
 
 physrisk.com {
-    handle /api* {
+    @api {
+        path /api/*
+        not path /api/tiles/*
+    }
+
+    handle @api {
         rate_limit {
             zone tiles {
                 key {remote_host}
@@ -15,7 +20,7 @@ physrisk.com {
         reverse_proxy api:8081
     }
 
-    handle /api/v1/tiles* {
+    handle /api/tiles* {
         rate_limit {
             zone tiles {
                 key {remote_host}
@@ -23,6 +28,8 @@ physrisk.com {
                 window 1m
             }
         }
+        uri strip_prefix /api
+        reverse_proxy api:8081
     }
 
     # Swagger UI fetches /openapi.json from the root
