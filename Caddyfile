@@ -3,6 +3,16 @@
 }
 
 physrisk.com {
+    # Strip /api prefix so FastAPI receives /docs and /openapi.json as expected
+    handle /api/docs* {
+        uri strip_prefix /api
+        reverse_proxy api:8081
+    }
+    handle /api/openapi.json {
+        uri strip_prefix /api
+        reverse_proxy api:8081
+    }
+
     handle /api/tiles/* {
         rate_limit {
             zone tiles {
@@ -25,7 +35,10 @@ physrisk.com {
         reverse_proxy api:8081
     }
 
-    # Swagger UI fetches /openapi.json from the root
+    # FastAPI serves docs and openapi schema without the /api prefix
+    handle /docs* {
+        reverse_proxy api:8081
+    }
     handle /openapi.json {
         reverse_proxy api:8081
     }
