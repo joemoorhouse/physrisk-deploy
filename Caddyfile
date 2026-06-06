@@ -3,34 +3,28 @@
 }
 
 physrisk.com {
-    # Rate limiting zones — defined at site level
-    rate_limit {
-        # Tiles endpoints: higher limit
-        zone tiles {
-            match {
-                path /api/tiles/*
+    # Map tiles — higher rate limit (handle blocks are mutually exclusive)
+    handle /api/tiles/* {
+        rate_limit {
+            zone tiles {
+                key    {remote_host}
+                events 600
+                window 1m
             }
-            key    {remote_host}
-            events 6000
-            window 1m
         }
-        # All other API endpoints: standard limit
-        # 'not path /api/tiles/*' prevents double-counting tile requests
-        zone api {
-            match {
-                not {
-                    path /api/tiles/*
-                }
-                path /api/*
-            }
-            key    {remote_host}
-            events 600
-            window 1m
-        }
+        uri strip_prefix /api
+        reverse_proxy api:8081
     }
 
-    # Route API requests to the API container, stripping the /api prefix
+    # All other API endpoints — standard rate limit
     handle /api/* {
+        rate_limit {
+            zone api {
+                key    {remote_host}
+                events 60
+                window 1m
+            }
+        }
         uri strip_prefix /api
         reverse_proxy api:8081
     }
