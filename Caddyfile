@@ -3,28 +3,30 @@
 }
 
 physrisk.com {
-    # Map tiles — higher rate limit (handle blocks are mutually exclusive)
-    handle /api/tiles/* {
-        rate_limit {
-            zone tiles {
-                key    {remote_host}
-                events 600
-                window 1m
-            }
-        }
-        uri strip_prefix /api
-        reverse_proxy api:8081
+    # Named matchers — tiles and non-tiles API are mutually exclusive
+    @tiles path /api/tiles/*
+    @api {
+        path /api/*
+        not path /api/tiles/*
     }
 
-    # All other API endpoints — standard rate limit
-    handle /api/* {
-        rate_limit {
-            zone api {
-                key    {remote_host}
-                events 60
-                window 1m
-            }
+    rate_limit @tiles {
+        zone tiles {
+            key    {remote_host}
+            events 600
+            window 1m
         }
+    }
+
+    rate_limit @api {
+        zone api {
+            key    {remote_host}
+            events 60
+            window 1m
+        }
+    }
+
+    handle /api/* {
         uri strip_prefix /api
         reverse_proxy api:8081
     }
