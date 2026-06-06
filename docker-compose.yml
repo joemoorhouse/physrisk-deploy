@@ -1,6 +1,6 @@
 services:
   caddy:
-    image: caddy:2-alpine
+    build: .
     ports:
       - "80:80"
       - "443:443"
@@ -20,6 +20,7 @@ services:
 
   api:
     image: quay.io/os-climate/physrisk-api:latest
+    command: fastapi run src/physrisk_api/app/main.py --port 8081 --workers 2
     env_file:
       - .env
     restart: unless-stopped

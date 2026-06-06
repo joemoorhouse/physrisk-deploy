@@ -3,8 +3,16 @@
 }
 
 physrisk.com {
-    # Route API requests to the API container, stripping the /api prefix
+    # Map tiles - higher rate limit
+    handle /api/tiles/* {
+        rate_limit {remote_host} 600r/m
+        uri strip_prefix /api
+        reverse_proxy api:8081
+    }
+
+    # All other API endpoints - standard rate limit
     handle /api/* {
+        rate_limit {remote_host} 60r/m
         uri strip_prefix /api
         reverse_proxy api:8081
     }
@@ -15,8 +23,15 @@ physrisk.com {
     }
 
     # Route everything else to the UI container
+    # On 404, fall back to index.html for SPA client-side routing
     handle {
-        reverse_proxy ui:8080
+        reverse_proxy ui:8080 {
+            @notfound status 404
+            handle_response @notfound {
+                rewrite * /index.html
+                reverse_proxy ui:8080
+            }
+        }
     }
 }
 
