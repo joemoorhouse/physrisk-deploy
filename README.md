@@ -3,7 +3,7 @@ Deployment of physrisk API and UI using Docker Compose, with Caddy handling HTTP
 
 **Containers:**
 - `quay.io/os-climate/physrisk-api` — FastAPI backend (internal port 8081)
-- `quay.io/os-climate/physrisk-ui` — React frontend (internal port 80)
+- `quay.io/os-climate/physrisk-ui` — React frontend (internal port 8080)
 - `caddy:2-alpine` — reverse proxy, public ports 80/443
 
 Caddy routes `/api/*` to the API container and everything else to the UI container.
@@ -65,13 +65,31 @@ docker compose up -d
 
 Caddy will obtain a Let's Encrypt certificate on first start. After 30–60 seconds visit `https://physrisk.com` to confirm everything is running.
 
+## Maintaining deployment
+
+### Command line connection:
+
+https://eu-west-2.console.aws.amazon.com/lightsail/webapp/us-east-1/instances/physrisk-demo/connect
+
+or
+
+```bash
+sudo chmod 400 LightsailDefaultKey-us-east-1.pem
+ssh -i LightsailDefaultKey-us-east-1.pem ubuntu@34.228.204.143
+```
+
 ### Useful commands
+Execute in same folder as docker-compose.yml.
 
 ```bash
 docker compose logs -f           # stream all logs
 docker compose logs -f caddy     # Caddy/HTTPS logs only
 docker compose logs -f api       # API logs only
+docker compose logs -f ui        # UI logs only
 docker compose pull              # pull latest images
 docker compose up -d             # restart with updated images
 docker compose down              # stop and remove containers
+ocker compose restart caddy      # restart caddy
 ```
+
+
