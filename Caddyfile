@@ -11,7 +11,7 @@ physrisk.com {
                 path /api/tiles/*
             }
             key    {remote_host}
-            events 600
+            events 6000
             window 1m
         }
         # All other API endpoints: standard limit
