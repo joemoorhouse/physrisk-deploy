@@ -9,8 +9,15 @@ physrisk.com {
         reverse_proxy api:8081
     }
 
+    # Swagger UI fetches /openapi.json from the root
+    handle /openapi.json {
+        reverse_proxy api:8081
+    }
+
     # Route everything else to the UI container
-    reverse_proxy * ui:8080
+    handle {
+        reverse_proxy ui:8080
+    }
 }
 
 # Redirect www to non-www (optional, remove if not needed)
