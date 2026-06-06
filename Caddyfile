@@ -3,16 +3,34 @@
 }
 
 physrisk.com {
-    # Map tiles - higher rate limit
-    handle /api/tiles/* {
-        rate_limit {http.request.remote.host} 600/m
-        uri strip_prefix /api
-        reverse_proxy api:8081
+    # Rate limiting zones — defined at site level
+    rate_limit {
+        # Tiles endpoints: higher limit
+        zone tiles {
+            match {
+                path /api/tiles/*
+            }
+            key    {remote_host}
+            events 600
+            window 1m
+        }
+        # All other API endpoints: standard limit
+        # 'not path /api/tiles/*' prevents double-counting tile requests
+        zone api {
+            match {
+                not {
+                    path /api/tiles/*
+                }
+                path /api/*
+            }
+            key    {remote_host}
+            events 60
+            window 1m
+        }
     }
 
-    # All other API endpoints - standard rate limit
+    # Route API requests to the API container, stripping the /api prefix
     handle /api/* {
-        rate_limit {http.request.remote.host} 60/m
         uri strip_prefix /api
         reverse_proxy api:8081
     }
@@ -35,7 +53,7 @@ physrisk.com {
     }
 }
 
-# Redirect www to non-www (optional, remove if not needed)
+# Redirect www to non-www
 www.physrisk.com {
     redir https://physrisk.com{uri} permanent
 }
