@@ -5,7 +5,9 @@
 physrisk.com {
     @api {
         path /api/*
-        not path /api/tiles/*
+        not {
+            path /api/tiles/*
+        }
     }
 
     handle @api {
