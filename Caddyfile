@@ -1,0 +1,16 @@
+{
+    email admin@physrisk.com
+}
+
+physrisk.com {
+    # Route API requests to the API container
+    reverse_proxy /api/* api:8081
+
+    # Route everything else to the UI container
+    reverse_proxy * ui:80
+}
+
+# Redirect www to non-www (optional, remove if not needed)
+www.physrisk.com {
+    redir https://physrisk.com{uri} permanent
+}
