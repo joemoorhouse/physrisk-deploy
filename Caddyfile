@@ -3,7 +3,7 @@
 }
 
 physrisk.com {
-    handle /api/api/tiles/* {
+    handle /api/tiles/* {
         rate_limit {
             zone tiles {
                 key {remote_host}
@@ -11,7 +11,6 @@ physrisk.com {
                 window 1m
             }
         }
-        uri strip_prefix /api
         reverse_proxy api:8081
     }
 
@@ -23,7 +22,6 @@ physrisk.com {
                 window 1m
             }
         }
-        uri strip_prefix /api
         reverse_proxy api:8081
     }
 
