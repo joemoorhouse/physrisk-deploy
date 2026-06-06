@@ -5,14 +5,14 @@
 physrisk.com {
     # Map tiles - higher rate limit
     handle /api/tiles/* {
-        rate_limit {remote_host} 600r/m
+        rate_limit {http.request.remote.host} 600/m
         uri strip_prefix /api
         reverse_proxy api:8081
     }
 
     # All other API endpoints - standard rate limit
     handle /api/* {
-        rate_limit {remote_host} 60r/m
+        rate_limit {http.request.remote.host} 60/m
         uri strip_prefix /api
         reverse_proxy api:8081
     }
