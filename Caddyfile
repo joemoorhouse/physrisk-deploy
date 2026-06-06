@@ -3,7 +3,7 @@
 }
 
 physrisk.com {
-    handle /api/tiles/* {
+    handle /api/api/tiles/* {
         rate_limit {
             zone tiles {
                 key {remote_host}
@@ -19,7 +19,7 @@ physrisk.com {
         rate_limit {
             zone api {
                 key {remote_host}
-                events 600
+                events 60
                 window 1m
             }
         }
