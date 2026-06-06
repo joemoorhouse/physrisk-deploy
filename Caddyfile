@@ -3,18 +3,11 @@
 }
 
 physrisk.com {
-    @api {
-        path /api/*
-        not {
-            path /api/tiles/*
-        }
-    }
-
-    handle @api {
+    handle /api/tiles/* {
         rate_limit {
             zone tiles {
                 key {remote_host}
-                events 60
+                events 600
                 window 1m
             }
         }
@@ -22,11 +15,11 @@ physrisk.com {
         reverse_proxy api:8081
     }
 
-    handle /api/tiles* {
+    handle /api/* {
         rate_limit {
-            zone tiles {
+            zone api {
                 key {remote_host}
-                events 600
+                events 60
                 window 1m
             }
         }
