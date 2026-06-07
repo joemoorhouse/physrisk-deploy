@@ -16,6 +16,9 @@ services:
 
   ui:
     image: quay.io/os-climate/physrisk-ui:latest
+    secrets:
+      - source: baseuris
+        target: /app/BaseUris.js
     restart: unless-stopped
 
   api:
@@ -28,3 +31,7 @@ services:
 volumes:
   caddy_data:
   caddy_config:
+
+secrets:
+  baseuris:
+    file: ./BaseUris.js
