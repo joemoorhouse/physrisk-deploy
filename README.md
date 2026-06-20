@@ -92,4 +92,9 @@ docker compose down              # stop and remove containers
 ocker compose restart caddy      # restart caddy
 ```
 
+### Generating API tokens
+For demonstration purposes (from a repo using uv), something like this is appropriate:
 
+```bash
+uv run python -c "import secrets; print(secrets.token_urlsafe(16))"
+```

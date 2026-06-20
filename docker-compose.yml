@@ -26,11 +26,16 @@ services:
     command: fastapi run src/physrisk_api/app/main.py --port 8081 --workers 2
     env_file:
       - .env
+    environment:
+      - PHYSRISK_CACHE_DIR=/cache
+    volumes:
+      - physrisk_cache:/cache
     restart: unless-stopped
 
 volumes:
   caddy_data:
   caddy_config:
+  physrisk_cache:
 
 secrets:
   baseuris:
