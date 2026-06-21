@@ -1,2 +1,3 @@
 .env
 LightsailDefaultKey-us-east-1.pem
+credentials.env
