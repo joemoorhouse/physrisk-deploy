@@ -24,6 +24,10 @@ physrisk.com {
         reverse_proxy api:8081
     }
 
+    handle /auth/* {
+        reverse_proxy api:8081
+    }
+
     handle /api/* {
         rate_limit {
             zone api {
