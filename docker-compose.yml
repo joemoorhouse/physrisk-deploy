@@ -34,6 +34,7 @@ services:
       - credentials.env
     environment:
       - PHYSRISK_CACHE_DIR=/cache
+      - MALLOC_TRIM_THRESHOLD_=100000
     volumes:
       - physrisk_cache:/cache
     depends_on:
@@ -43,7 +44,7 @@ services:
     deploy:
       resources:
         limits:
-          memory: 1g
+          memory: 1.5g
 
 volumes:
   caddy_data:
