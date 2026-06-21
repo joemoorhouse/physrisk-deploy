@@ -89,7 +89,7 @@ docker compose logs -f ui        # UI logs only
 docker compose pull              # pull latest images
 docker compose up -d             # restart with updated images
 docker compose down              # stop and remove containers
-ocker compose restart caddy      # restart caddy
+docker compose restart caddy      # restart caddy
 ```
 
 ### Generating API tokens
