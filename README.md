@@ -90,6 +90,8 @@ docker compose pull              # pull latest images
 docker compose up -d             # restart with updated images
 docker compose down              # stop and remove containers
 docker compose restart caddy      # restart caddy
+docker volume inspect physrisk_cache # find location of cache folder
+docker compose exec api ls -la /cache # inspect cache folder
 ```
 
 ### Generating API tokens
