@@ -21,6 +21,12 @@ services:
         target: /app/BaseUris.js
     restart: unless-stopped
 
+  cache-init:
+    image: alpine
+    command: chown -R 1000:1000 /cache
+    volumes:
+      - physrisk_cache:/cache
+
   api:
     image: quay.io/os-climate/physrisk-api:latest
     command: fastapi run src/physrisk_api/app/main.py --port 8081 --workers 2
@@ -30,6 +36,9 @@ services:
       - PHYSRISK_CACHE_DIR=/cache
     volumes:
       - physrisk_cache:/cache
+    depends_on:
+      cache-init:
+        condition: service_completed_successfully
     restart: unless-stopped
 
 volumes:

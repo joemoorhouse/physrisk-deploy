@@ -98,3 +98,9 @@ For demonstration purposes (from a repo using uv), something like this is approp
 ```bash
 uv run python -c "import secrets; print(secrets.token_urlsafe(16))"
 ```
+
+Ensure that credentials only readable by owner:
+```
+chmod 600 credentials.env
+```
+One security note: environment variables are visible by ```docker inspect```; consider using Dockers Secrets (like baseuris for UI).
