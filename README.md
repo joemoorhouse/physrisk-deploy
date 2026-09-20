@@ -48,11 +48,13 @@ git clone https://github.com/YOUR_ORG/physrisk-deploy.git ~/physrisk
 
 The Caddyfile is already configured for `physrisk.com`. If your domain changes, update the three occurrences in `Caddyfile` and the admin email address.
 
-### 6. Create the `.env` file
+### 6. Create the `credentials.env` and `config.js` files
 
 ```bash
-cp .env.example .env
-nano .env   # add any environment variables required by the API container
+cp credentials_template.env credentials.env
+cp config_template.js config.js
+nano credentials.env   # add any environment variables required by the API container
+nano config.js         # add any config required by the UI
 ```
 
 If the API needs no environment variables, leave the file empty — it must still exist.
