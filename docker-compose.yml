@@ -17,8 +17,8 @@ services:
   ui:
     image: quay.io/os-climate/physrisk-ui:latest
     secrets:
-      - source: baseuris
-        target: /app/BaseUris.js
+      - source: ui-config
+        target: /app/config.js
     restart: unless-stopped
 
   cache-init:
@@ -52,5 +52,5 @@ volumes:
   physrisk_cache:
 
 secrets:
-  baseuris:
-    file: ./BaseUris.js
+  ui-config:
+    file: ./config.js

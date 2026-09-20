@@ -92,6 +92,7 @@ docker compose down              # stop and remove containers
 docker compose restart caddy      # restart caddy
 docker volume inspect physrisk_cache # find location of cache folder
 docker compose exec api ls -la /cache # inspect cache folder
+docker stats # container stats
 ```
 
 ### Generating API tokens
